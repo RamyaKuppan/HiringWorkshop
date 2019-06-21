@@ -25,3 +25,8 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+ext {
+    androidxRecyclerViewVersion = "1.0.0"
+    VolleyVersion = "1.1.1"
+}
+
