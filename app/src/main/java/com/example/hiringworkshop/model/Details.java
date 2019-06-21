@@ -8,13 +8,14 @@ public class Details {
     @SerializedName("description")
     String description;
 
-    Channel channelInfo;
     @SerializedName("uploader")
     String uploader;
     @SerializedName("views")
     String views;
     @SerializedName("uploadedTimeline")
     String uploadedTimeline;
+
+    Channel channelInfo;
 
     boolean isLiked;
 
