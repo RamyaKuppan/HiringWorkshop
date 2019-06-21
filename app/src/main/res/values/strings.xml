@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">HiringWorkshop</string>
+    <string name="video_url">https://hiringworkshop.herokuapp.com/api/workshop/video</string>
+    <string name="subscribe">subscribe</string>
+    <string name="add_comment">Add Comment</string>
 </resources>
