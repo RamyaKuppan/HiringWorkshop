@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.hiringworkshop.R;
-import com.example.hiringworkshop.models.ChannelDetail;
+import com.example.hiringworkshop.uimodels.ChannelDetail;
 import com.example.hiringworkshop.modules.detail.VideoDetailActivity;
 import com.example.hiringworkshop.mvp.ActivityView;
 
@@ -41,6 +41,7 @@ public class ChannelActivity extends ActivityView<ChannelPresenter, ChannelPrese
 
     @Override
     protected ChannelPresenterCallback getCallback() {
+        //Used weakreference internally.
         return this;
     }
 

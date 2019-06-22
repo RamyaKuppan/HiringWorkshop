@@ -1,6 +1,6 @@
 package com.example.hiringworkshop.repositories;
 
-import com.example.hiringworkshop.models.ChannelDetail;
+import com.example.hiringworkshop.uimodels.ChannelDetail;
 import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 
 import java.util.HashSet;

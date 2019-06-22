@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.hiringworkshop.R;
-import com.example.hiringworkshop.models.ChannelDetail;
+import com.example.hiringworkshop.uimodels.ChannelDetail;
 import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
 import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 import com.example.hiringworkshop.modules.channel.ChannelActivity;
@@ -110,6 +110,8 @@ public class VideoDetailActivity extends ActivityView<VideoDetailPresenter, Deta
 
     @Override
     protected DetailPresenterCallback getCallback() {
+
+        //Used weakreference internally.
         return this;
     }
 

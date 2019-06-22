@@ -1,6 +1,6 @@
 package com.example.hiringworkshop.modules.detail;
 
-import com.example.hiringworkshop.models.ChannelDetail;
+import com.example.hiringworkshop.uimodels.ChannelDetail;
 import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
 import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 import com.example.hiringworkshop.mvp.Presenter;

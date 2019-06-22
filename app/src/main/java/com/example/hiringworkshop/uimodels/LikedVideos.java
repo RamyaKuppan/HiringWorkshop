@@ -1,4 +1,4 @@
-package com.example.hiringworkshop.models;
+package com.example.hiringworkshop.uimodels;
 
 import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 
@@ -6,6 +6,7 @@ import java.util.List;
 
 public class LikedVideos {
 
+    //TODO add serialization
     private List<VideoDetail> likedVideos;
 
     public List<VideoDetail> getLikedVideos() {

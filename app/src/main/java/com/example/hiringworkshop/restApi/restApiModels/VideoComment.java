@@ -2,6 +2,8 @@ package com.example.hiringworkshop.restApi.restApiModels;
 
 public class VideoComment {
 
+    //TODO add serialization
+
     private String name;
 
     private String comment;

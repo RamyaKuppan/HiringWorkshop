@@ -3,7 +3,6 @@ package com.example.hiringworkshop.db;
 import com.example.hiringworkshop.db.dbModels.LikedVideosDbData;
 import com.example.hiringworkshop.db.dbModels.VideoAndLikedData;
 import com.example.hiringworkshop.db.dbModels.VideoDbData;
-import com.example.hiringworkshop.models.LikedVideos;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface VideoDao {
 
-    @Query("SELECT video.*, liked_videos.* from video LEFT JOIN liked_videos ON video.id = liked_videos.video_id")
+    @Query("SELECT video.*, liked_videos.* from video LEFT JOIN liked_videos ON video.vid = liked_videos.video_id")
     List<VideoAndLikedData> getVideoDataList();
 
     @Insert(onConflict = REPLACE)

@@ -1,9 +1,10 @@
-package com.example.hiringworkshop.models;
+package com.example.hiringworkshop.uimodels;
 
 import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 
 public class ChannelDetail {
 
+    //TODO add serializations.
     private String channel;
 
     private int channelSubscribers;

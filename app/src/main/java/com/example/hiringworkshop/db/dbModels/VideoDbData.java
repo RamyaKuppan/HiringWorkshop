@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey;
 public class VideoDbData {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "vid")
     private long id;
 
     @ColumnInfo(name = "name")

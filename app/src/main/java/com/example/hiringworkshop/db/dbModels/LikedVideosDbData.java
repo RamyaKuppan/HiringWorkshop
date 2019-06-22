@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "liked_videos")
 public class LikedVideosDbData {
+
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "likeid")
     private int id;
 
     @ColumnInfo(name = "video_id")

@@ -1,7 +1,5 @@
 package com.example.hiringworkshop.db.dbModels;
 
-import com.example.hiringworkshop.models.LikedVideos;
-
 import androidx.room.Embedded;
 
 public class VideoAndLikedData {
@@ -10,7 +8,7 @@ public class VideoAndLikedData {
     VideoDbData videoDbData;
 
     @Embedded
-    LikedVideos likedVideos;
+    LikedVideosDbData likedVideos;
 
     public VideoDbData getVideoDbData() {
         return videoDbData;
@@ -20,11 +18,11 @@ public class VideoAndLikedData {
         this.videoDbData = videoDbData;
     }
 
-    public LikedVideos getLikedVideos() {
+    public LikedVideosDbData getLikedVideos() {
         return likedVideos;
     }
 
-    public void setLikedVideos(LikedVideos likedVideos) {
+    public void setLikedVideos(LikedVideosDbData likedVideos) {
         this.likedVideos = likedVideos;
     }
 }

@@ -40,6 +40,7 @@ public abstract class ActivityView<T extends Presenter, E extends PresenterToVie
     }
 
     public void initializePresenter() {
+        //TODO check type.
         presenter = (T) PresenterProvider.getInstance().attachPresenter(viewKey, new FactoryCallback() {
             @Override
             public Presenter generatePresenter() {

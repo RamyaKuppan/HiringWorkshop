@@ -1,4 +1,4 @@
-package com.example.hiringworkshop.models;
+package com.example.hiringworkshop.uimodels;
 
 import java.util.List;
 

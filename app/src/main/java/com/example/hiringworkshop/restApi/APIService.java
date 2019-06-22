@@ -1,5 +1,6 @@
 package com.example.hiringworkshop.restApi;
 
+import com.example.hiringworkshop.restApi.restApiModels.CommentReply;
 import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
 import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 
@@ -20,4 +21,7 @@ public interface APIService {
 
     @POST("workshop/comments")
     Call<List<VideoComment>> uploadVideoComment(@Body VideoComment videoComment);
+
+    @POST("workshop/reply")
+    Call addReplyToComment(CommentReply commentReply);
 }

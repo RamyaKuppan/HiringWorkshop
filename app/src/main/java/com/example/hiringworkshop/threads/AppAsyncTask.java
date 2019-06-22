@@ -4,7 +4,7 @@ import android.os.AsyncTask;
 
 public class AppAsyncTask<T> extends AsyncTask<Void, Void, T> {
 
-    //TODO need to improve the desing....
+    //TODO need to improve the desing and switch to handler or something else....
     private AppAsyncCallback<T> appAsyncCallback;
 
     public AppAsyncTask(AppAsyncCallback<T> appAsyncCallback) {

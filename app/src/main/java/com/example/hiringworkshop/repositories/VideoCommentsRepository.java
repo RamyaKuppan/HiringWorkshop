@@ -1,8 +1,9 @@
 package com.example.hiringworkshop.repositories;
 
-import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
 import com.example.hiringworkshop.mvp.DataRepository;
 import com.example.hiringworkshop.restApi.APIManager;
+import com.example.hiringworkshop.restApi.restApiModels.CommentReply;
+import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ public class VideoCommentsRepository extends DataRepository {
 
     public void getVideoComments(final VideoCommentsCallback videoCommentsCallback) {
 
+        //TODO Check for connection and fallback to db.
+
+
         if (mVideoComments != null) {
             videoCommentsCallback.showVideComments(mVideoComments);
         } else {
@@ -34,16 +38,41 @@ public class VideoCommentsRepository extends DataRepository {
                         mVideoComments = response.body();
                         videoCommentsCallback.showVideComments(mVideoComments);
                     } else {
+
+                        //TODO wire it with DB to fallback to offline data.
                         videoCommentsCallback.showError(response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<VideoComment>> call, Throwable t) {
+                    //TODO wire it with DB to fallback to offline data.
                     videoCommentsCallback.showError(0);
                 }
             });
         }
+    }
+
+    public void addReplyToComment(String commentId, String reply) {
+
+        CommentReply commentReply = new CommentReply();
+        commentReply.setId(commentId);
+        commentReply.setReply(reply);
+        commentReply.setUser("Prasanna");
+
+        APIManager.getInstance().getApiService().addReplyToComment(commentReply).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response != null && response.isSuccessful()) {
+                    //TODO done.
+                }
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                //TODO handle failure.
+            }
+        });
     }
 
     public void addComment(final VideoComment videoComment, @Nullable final VideoCommentsCallback videoCommentsCallback) {
@@ -62,7 +91,7 @@ public class VideoCommentsRepository extends DataRepository {
                         videoCommentsCallback.showVideComments(mVideoComments);
                     }
                 } else {
-                    if(videoCommentsCallback != null) {
+                    if (videoCommentsCallback != null) {
                         videoCommentsCallback.showError(response.code());
                     }
                 }
@@ -70,7 +99,7 @@ public class VideoCommentsRepository extends DataRepository {
 
             @Override
             public void onFailure(Call<List<VideoComment>> call, Throwable t) {
-                if(videoCommentsCallback != null) {
+                if (videoCommentsCallback != null) {
                     videoCommentsCallback.showError(0);
                 }
             }
@@ -85,6 +114,36 @@ public class VideoCommentsRepository extends DataRepository {
     @Override
     protected void clearData() {
         mVideoComments = null;
+    }
+
+    public VideoComment getRepliesForComment(String commentId) {
+        for (VideoComment videoComment : mVideoComments) {
+            if (videoComment.getName().equals(commentId)) {
+
+            }
+        }
+
+        return null;
+    }
+
+    public void sendReply(String reply, String commentId) {
+
+        CommentReply commentReply = new CommentReply();
+        commentReply.setUser("Prasanna");
+        commentReply.setReply(reply);
+        commentReply.setId(commentId);
+
+        APIManager.getInstance().getApiService().addReplyToComment(commentReply).enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                //TODO
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+                //TODO.
+            }
+        });
     }
 
     public interface VideoCommentsCallback {

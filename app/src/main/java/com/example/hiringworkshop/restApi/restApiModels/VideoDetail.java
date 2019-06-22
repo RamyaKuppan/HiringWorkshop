@@ -2,6 +2,7 @@ package com.example.hiringworkshop.restApi.restApiModels;
 
 public class VideoDetail {
 
+    //TODO add serialization
     private String image;
 
     private String description;

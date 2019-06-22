@@ -26,7 +26,7 @@ public class APIManager {
         }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://hiringworkshop.herokuapp.com/api/")
+                .baseUrl("https://hiringworkshop.herokuapp.com/api/") //TODO get it from properties file.
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient.build())
                 .build();

@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.hiringworkshop.R;
+import com.example.hiringworkshop.modules.reply.ReplyActivity;
 import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
 
 import java.util.List;
@@ -51,16 +52,25 @@ class CommentsViewHolder extends RecyclerView.ViewHolder {
 
     private TextView nameText;
     private TextView commentText;
+    private TextView replyText;
 
     public CommentsViewHolder(@NonNull View itemView) {
         super(itemView);
 
         nameText = itemView.findViewById(R.id.user_name);
         commentText = itemView.findViewById(R.id.comment);
+        replyText = itemView.findViewById(R.id.reply_text);
     }
 
     public void setDataToView(VideoComment videoComment) {
         nameText.setText(videoComment.getName());
         commentText.setText(videoComment.getComment());
+
+        replyText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReplyActivity.open(v.getContext(), videoComment.getComment());
+            }
+        });
     }
 }
