@@ -2,14 +2,17 @@ package com.example.hiringworkshop.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hiringworkshop.AppConstants;
 import com.example.hiringworkshop.R;
@@ -47,9 +50,13 @@ public class MainActivity extends AppCompatActivity implements VideoLoaderCallba
         commentsRecycler = findViewById(R.id.recycler_view_comments);
         buttonPostComment = findViewById(R.id.button_post_comment);
         editTextComment = findViewById(R.id.edit_text_comment);
-        loader = new VideoLoader(this);
-        loader.loadVideo();
         setUpViews();
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        getData();
     }
 
     private void setUpViews() {
@@ -73,12 +80,20 @@ public class MainActivity extends AppCompatActivity implements VideoLoaderCallba
                 postComments();
             }
         });
-        commentsRecycler.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CommentsAdapter();
+        commentsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        commentsRecycler.setItemAnimator(new DefaultItemAnimator());
         commentsRecycler.setAdapter(adapter);
     }
 
+    private void getData() {
+        loader = new VideoLoader(this);
+        loader.loadVideo();
+        loader.getComments();
+    }
+
     private void postComments() {
+        editTextComment.setText("");
         loader.postComment(editTextComment.getText().toString());
     }
 

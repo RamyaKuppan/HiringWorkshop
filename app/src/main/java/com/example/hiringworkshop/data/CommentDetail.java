@@ -14,9 +14,9 @@ public class CommentDetail implements Parcelable {
     @SerializedName("comment")
     @Expose
     private String comment;
-    @SerializedName("user")
+    @SerializedName("name")
     @Expose
-    private String user;
+    private String name;
     @SerializedName("timestamp")
     @Expose
     private Integer timestamp;
@@ -38,7 +38,7 @@ public class CommentDetail implements Parcelable {
     protected CommentDetail(Parcel in) {
         this.id = ((String) in.readValue((String.class.getClassLoader())));
         this.comment = ((String) in.readValue((String.class.getClassLoader())));
-        this.user = ((String) in.readValue((String.class.getClassLoader())));
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.timestamp = ((Integer) in.readValue((Integer.class.getClassLoader())));
     }
 
@@ -62,11 +62,11 @@ public class CommentDetail implements Parcelable {
     }
 
     public String getUser() {
-        return user;
+        return name;
     }
 
     public void setUser(String user) {
-        this.user = user;
+        this.name = user;
     }
 
     public Integer getTimestamp() {
@@ -80,7 +80,7 @@ public class CommentDetail implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(comment);
-        dest.writeValue(user);
+        dest.writeValue(name);
         dest.writeValue(timestamp);
     }
 
