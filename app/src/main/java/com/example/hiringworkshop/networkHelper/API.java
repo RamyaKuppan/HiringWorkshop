@@ -18,6 +18,6 @@ public interface API {
     Call<List<CommentsModel>> getCommentsList();
 
     @POST("api/workshop/comments")
-    Call postComments(@Body CommentsModel commentsModel);
+    Call<CommentsModel> postComments(@Body CommentsModel commentsModel);
 }
 

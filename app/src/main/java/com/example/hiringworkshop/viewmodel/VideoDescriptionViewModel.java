@@ -107,9 +107,9 @@ public class VideoDescriptionViewModel extends ViewModel {
     public void uploadComments(String comments) {
         CommentsModel commentsModel = new CommentsModel();
         commentsModel.setComment(comments);
-        RetrofitHelper.getInstance().getAPI().postComments(commentsModel).enqueue(new Callback() {
+        RetrofitHelper.getInstance().getAPI().postComments(commentsModel).enqueue(new Callback<CommentsModel>() {
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) {
+            public void onResponse(@NonNull Call<CommentsModel> call, @NonNull Response<CommentsModel> response) {
                 if (iResponseListener != null && response.isSuccessful()) {
                     iResponseListener.onResponse(response, "uploadcomments");
                 } else if (iResponseListener != null)
@@ -117,10 +117,12 @@ public class VideoDescriptionViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(@NonNull Call call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<CommentsModel> call, @NonNull Throwable t) {
                 if (iResponseListener != null)
                     iResponseListener.onFailureResponse();
             }
+
         });
+
     }
 }
