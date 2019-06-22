@@ -4,7 +4,14 @@ package com.example.hiringworkshop.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class VideoModel {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class VideoModel extends RealmObject {
+
+    @PrimaryKey
+    private long id;
+
     @SerializedName("image")
     @Expose
     private String image;
@@ -92,5 +99,13 @@ public class VideoModel {
 
     public void setChannelOwner(String channelOwner) {
         this.channelOwner = channelOwner;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

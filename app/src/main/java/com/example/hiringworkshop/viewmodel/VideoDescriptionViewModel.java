@@ -10,6 +10,7 @@ import com.example.hiringworkshop.networkHelper.RetrofitHelper;
 
 import java.util.List;
 
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,6 +24,7 @@ public class VideoDescriptionViewModel extends ViewModel {
     ResponseListener iResponseListener;
 
     private boolean isLiked;
+    private Realm realm = Realm.getDefaultInstance();
 
     /**
      * on the activity start the listeners will be added to send the call back to the view
@@ -107,6 +109,7 @@ public class VideoDescriptionViewModel extends ViewModel {
     public void uploadComments(String comments) {
         CommentsModel commentsModel = new CommentsModel();
         commentsModel.setComment(comments);
+        commentsModel.setUser("Bala");
         RetrofitHelper.getInstance().getAPI().postComments(commentsModel).enqueue(new Callback<CommentsModel>() {
             @Override
             public void onResponse(@NonNull Call<CommentsModel> call, @NonNull Response<CommentsModel> response) {
@@ -124,5 +127,18 @@ public class VideoDescriptionViewModel extends ViewModel {
 
         });
 
+    }
+
+    /**
+     * get data from the DB to restore the data
+     */
+    public void getVideoFromDB() {
+        realm.executeTransaction(query -> {
+            VideoModel video =
+                    realm.where(VideoModel.class).findFirst();
+            if (iResponseListener != null) {
+                iResponseListener.onDBDataReady(video);
+            }
+        });
     }
 }

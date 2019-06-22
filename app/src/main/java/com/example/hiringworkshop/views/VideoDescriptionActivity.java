@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,14 +17,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.hiringworkshop.DatabaseRepo.RealmDB;
+import com.example.hiringworkshop.DatabaseRepo.VideoTable;
 import com.example.hiringworkshop.R;
 import com.example.hiringworkshop.ResponseListener;
 import com.example.hiringworkshop.models.CommentsModel;
 import com.example.hiringworkshop.models.VideoModel;
+import com.example.hiringworkshop.utils.NetworkUtil;
 import com.example.hiringworkshop.viewmodel.VideoDescriptionViewModel;
 
 import java.util.List;
 
+import io.realm.Realm;
 import retrofit2.Response;
 
 public class VideoDescriptionActivity extends AppCompatActivity implements
@@ -47,10 +52,18 @@ public class VideoDescriptionActivity extends AppCompatActivity implements
 
     private Button btnSubmitComments;
 
+    private VideoTable videoTable;
+
+    private Realm realm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        RealmDB realmDB = new RealmDB(getApplicationContext());
+        realmDB.setUpRealm();
+        realm = Realm.getDefaultInstance();
+        videoTable = new VideoTable(this);
         ivLike = findViewById(R.id.iv_like);
         fragmentHandler = new Handler();
         ivVideoThumbnail = findViewById(R.id.iv_video_thumbnail);
@@ -61,8 +74,17 @@ public class VideoDescriptionActivity extends AppCompatActivity implements
         setOnClickListeners();
         videoDescriptionViewModel = ViewModelProviders.of(this).get(VideoDescriptionViewModel.class);
         videoDescriptionViewModel.setResponseListener(this);
-        videoDescriptionViewModel.getVideoDetails();
+
+        if (NetworkUtil.isNetworkConnected(this)) {
+            videoDescriptionViewModel.getVideoDetails();
+        } else {
+            loadDataFromDB();
+        }
         updateUIAfterOrientationChanges();
+    }
+
+    private void loadDataFromDB() {
+        videoDescriptionViewModel.getVideoFromDB();
     }
 
     /**
@@ -146,6 +168,8 @@ public class VideoDescriptionActivity extends AppCompatActivity implements
             mVideoModel = videoModelResponse.body();
             Glide.with(this).load(videoModelResponse.body().getImage()).into(ivVideoThumbnail);
             tvChannelName.setText(videoModelResponse.body().getChannel());
+            mVideoModel.setId(1);
+            videoTable.writeVideo(mVideoModel);
         } else if (response.body() != null && identifier.equals("comments")) {
             Response<List<CommentsModel>> comments = (Response<List<CommentsModel>>) response;
             setCommentsDataToUI(comments);
@@ -165,6 +189,18 @@ public class VideoDescriptionActivity extends AppCompatActivity implements
     @Override
     public void onFailureResponse() {
         Toast.makeText(this, "something went wrong", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDBDataReady(VideoModel videoModel) {
+        if (videoModel != null) {
+            //data is already stored in the DB
+            Glide.with(this).load(videoModel.getImage()).into(ivVideoThumbnail);
+            tvChannelName.setText(videoModel.getChannel());
+        } else {
+            Toast.makeText(this, "Data back up is not available", Toast.LENGTH_LONG).show();
+        }
+
     }
 
     @Override

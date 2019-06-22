@@ -1,5 +1,7 @@
 package com.example.hiringworkshop;
 
+import com.example.hiringworkshop.models.VideoModel;
+
 import retrofit2.Response;
 
 /**
@@ -20,4 +22,6 @@ public interface ResponseListener {
      * on failure case happend this method will be invoked to notify the view
      */
     void onFailureResponse();
+
+    void onDBDataReady(VideoModel videoModel);
 }

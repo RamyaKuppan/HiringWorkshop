@@ -21,7 +21,11 @@ public class RetrofitHelper {
         mApiImpl = getRetrofit().create(API.class);
     }
 
-
+    /**
+     * this method will create the retrofit instance
+     *
+     * @return retrofit instance
+     */
     private static Retrofit getRetrofit() {
         if (null == mRetrofit) {
 
@@ -53,6 +57,11 @@ public class RetrofitHelper {
         return mRetrofit;
     }
 
+    /**
+     * instance of retrofit helper
+     *
+     * @return retrofit helper
+     */
     public static RetrofitHelper getInstance() {
         if (mHelper == null) {
             mHelper = new RetrofitHelper();
