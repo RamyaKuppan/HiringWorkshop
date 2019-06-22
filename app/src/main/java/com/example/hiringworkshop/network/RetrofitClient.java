@@ -8,7 +8,8 @@ public class RetrofitClient {
     private static RetrofitClient mInstance;
     private static VideoService mService;
 
-    private RetrofitClient(){
+
+    private RetrofitClient() {
         Retrofit mRetrofit = new Retrofit.Builder()
                 .baseUrl("http://hiringworkshop.herokuapp.com/api/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -17,8 +18,8 @@ public class RetrofitClient {
         mService = mRetrofit.create(VideoService.class);
     }
 
-    public static RetrofitClient getInstance(){
-        if(mInstance == null){
+    public static RetrofitClient getInstance() {
+        if (mInstance == null) {
             mInstance = new RetrofitClient();
         }
         return mInstance;

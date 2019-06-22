@@ -1,17 +1,22 @@
 package com.example.hiringworkshop.activity;
 
 
+import android.util.Log;
+
 import androidx.databinding.ObservableField;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.hiringworkshop.VideoApplication;
 import com.example.hiringworkshop.ViewModelCommunicator;
+import com.example.hiringworkshop.fragment.video.comment.CommentsAdapter;
 import com.example.hiringworkshop.model.Channel;
+import com.example.hiringworkshop.model.Comment;
 import com.example.hiringworkshop.model.Details;
+import com.example.hiringworkshop.model.response.DetailsResponseData;
 import com.example.hiringworkshop.network.RetrofitClient;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,7 +25,7 @@ import retrofit2.Response;
 public class MainActivityViewModel extends ViewModel {
 
     public ObservableField<String> likeBtnText = new ObservableField<>();
-    public ObservableField<String> suscribeBtnText = new ObservableField<>();
+    public ObservableField<String> subscribeBtnText = new ObservableField<>();
     public ObservableField<Details> details = new ObservableField<>();
 
     private RetrofitClient mRetrofitClient = VideoApplication.getRetrofitClient();
@@ -40,7 +45,7 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     private void getLikeBtnText() {
-        if(getDetails() != null) {
+        if (getDetails() != null) {
             String text = (getDetails().isLiked()) ? "Unlike" : "Like";
             likeBtnText.set(text);
         } else {
@@ -49,45 +54,46 @@ public class MainActivityViewModel extends ViewModel {
     }
 
     private void getSubscribeBtnText() {
-        if(getDetails() != null && getDetails().getChannelInfo() != null) {
+        if (getDetails() != null && getDetails().getChannelInfo() != null) {
             String text = (getDetails().getChannelInfo().isSubscribed()) ? "Unsubscribe" : "Subscribe";
-            suscribeBtnText.set(text);
+            subscribeBtnText.set(text);
         } else {
-            suscribeBtnText.set("Subscribe");
+            subscribeBtnText.set("Subscribe");
         }
     }
 
     public void getData() {
-        Call<JSONObject> request = mRetrofitClient.getService().getDetails();
-        request.enqueue(new Callback<JSONObject>() {
+        Call<DetailsResponseData> request = mRetrofitClient.getService().getDetails();
+        request.enqueue(new Callback<DetailsResponseData>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                JSONObject object = response.body();
-                Details details = new Details();
-                Channel channel = new Channel();
+            public void onResponse(Call<DetailsResponseData> call, Response<DetailsResponseData> response) {
+                DetailsResponseData vDetails = response.body();
 
-                try {
-                    details.setImage(object.getString("image"));
-                    details.setDescription(object.getString("description"));
-                    channel.setChannelSubscribers(object.getLong("channelSubscribers"));
-                    channel.setChannelOwner(object.getString("channelOwner"));
+                if (vDetails != null) {
+                    Details details = new Details();
+                    details.setImage(vDetails.getImage());
+                    details.setDescription(vDetails.getDescription());
+
+                    Channel channel = new Channel();
+                    channel.setChannel(vDetails.getChannel());
+                    channel.setChannelSubscribers(String.valueOf(vDetails.getChannelSubscribers()));
+                    channel.setChannelOwner(vDetails.getChannelOwner());
+
                     details.setChannelInfo(channel);
-                    details.setUploader(object.getString("uploader"));
-                    details.setViews(object.getString("views"));
-                    details.setUploadedTimeline(object.getString("uploadedTimeline"));
-                } catch (JSONException ex) {
-                    ex.printStackTrace();
-                }
+                    details.setUploader(vDetails.getUploader());
+                    details.setViews(vDetails.getViews());
+                    details.setUploadedTimeline(vDetails.getUploadedTimeline());
 
-                setDetails(details);
-                getLikeBtnText();
-                getSubscribeBtnText();
-                mCommunicator.loadVideoFragment();
+                    setDetails(details);
+                    getLikeBtnText();
+                    getSubscribeBtnText();
+                    mCommunicator.loadVideoFragment();
+                }
             }
 
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
-
+            public void onFailure(Call<DetailsResponseData> call, Throwable t) {
+                Log.e("get details error ", t.getLocalizedMessage());
             }
         });
     }

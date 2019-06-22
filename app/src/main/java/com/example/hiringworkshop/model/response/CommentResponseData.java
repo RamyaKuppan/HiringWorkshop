@@ -1,25 +1,26 @@
-package com.example.hiringworkshop.model;
+package com.example.hiringworkshop.model.response;
 
 import androidx.annotation.Nullable;
 
+import com.example.hiringworkshop.model.User;
 import com.google.gson.annotations.SerializedName;
 
-public class Comment {
-
+public class CommentResponseData {
     @SerializedName("id")
     String id;
-    User user;
+    @SerializedName("name")
+    String name;
     @SerializedName("comment")
     String comment;
     @SerializedName("timestamp")
     long timestamp;
 
-    public User getUser() {
-        return user;
+    public String getName() {
+        return name;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getComment() {

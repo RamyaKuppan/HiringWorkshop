@@ -1,10 +1,19 @@
 package com.example.hiringworkshop.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Channel {
 
+    @SerializedName("channel")
     String channel;
-    long channelSubscribers;
+
+    @SerializedName("channelSubscribers")
+    String channelSubscribers;
+
+    @SerializedName("channelOwner")
     String channelOwner;
+
+    @SerializedName("isSubscribed")
     boolean isSubscribed;
 
     public String getChannel() {
@@ -12,7 +21,7 @@ public class Channel {
     }
 
     public String getChannelSubscribers() {
-        return String.valueOf(channelSubscribers);
+        return channelSubscribers;
     }
 
     public String getChannelOwner() {
@@ -27,7 +36,7 @@ public class Channel {
         this.channel = channel;
     }
 
-    public void setChannelSubscribers(long channelSubscribers) {
+    public void setChannelSubscribers(String channelSubscribers) {
         this.channelSubscribers = channelSubscribers;
     }
 

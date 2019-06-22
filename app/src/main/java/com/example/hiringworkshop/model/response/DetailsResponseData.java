@@ -1,29 +1,24 @@
-package com.example.hiringworkshop.model;
+package com.example.hiringworkshop.model.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Details {
+public class DetailsResponseData {
     @SerializedName("image")
     String image;
     @SerializedName("description")
     String description;
+    @SerializedName("channel")
+    String channel;
     @SerializedName("uploader")
     String uploader;
     @SerializedName("views")
     String views;
     @SerializedName("uploadedTimeline")
     String uploadedTimeline;
-
-    Channel channelInfo;
-    boolean isLiked;
-
-    public boolean isLiked() {
-        return isLiked;
-    }
-
-    public void setLiked(boolean liked) {
-        isLiked = liked;
-    }
+    @SerializedName("channelSubscribers")
+    long channelSubscribers;
+    @SerializedName("channelOwner")
+    String channelOwner;
 
     public String getImage() {
         return image;
@@ -39,6 +34,14 @@ public class Details {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
     public String getUploader() {
@@ -65,11 +68,19 @@ public class Details {
         this.uploadedTimeline = uploadedTimeline;
     }
 
-    public Channel getChannelInfo() {
-        return channelInfo;
+    public long getChannelSubscribers() {
+        return channelSubscribers;
     }
 
-    public void setChannelInfo(Channel channelInfo) {
-        this.channelInfo = channelInfo;
+    public void setChannelSubscribers(long channelSubscribers) {
+        this.channelSubscribers = channelSubscribers;
+    }
+
+    public String getChannelOwner() {
+        return channelOwner;
+    }
+
+    public void setChannelOwner(String channelOwner) {
+        this.channelOwner = channelOwner;
     }
 }

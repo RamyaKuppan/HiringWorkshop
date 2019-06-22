@@ -5,19 +5,21 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.hiringworkshop.R;
 import com.example.hiringworkshop.ViewModelCommunicator;
-import com.example.hiringworkshop.databinding.ActivityMainBinding;
-import com.example.hiringworkshop.fragment.ChannelFragment;
-import com.example.hiringworkshop.fragment.VideoFragment;
+import com.example.hiringworkshop.fragment.channel.ChannelFragment;
+import com.example.hiringworkshop.fragment.video.VideoFragment;
+import com.example.hiringworkshop.model.Comment;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ViewModelCommunicator {
 
-    private FragmentManager mFragmentManager;
-
     public MainActivityViewModel viewModel;
+    private FragmentManager mFragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +27,11 @@ public class MainActivity extends AppCompatActivity implements ViewModelCommunic
         mFragmentManager = getSupportFragmentManager();
 
         viewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setViewModel(viewModel);
+        DataBindingUtil.setContentView(this, R.layout.activity_main);
         viewModel.setCommunicator(this);
-        viewModel.getData();
+        if(savedInstanceState == null) {
+            viewModel.getData();
+        }
     }
 
     @Override
@@ -49,4 +52,5 @@ public class MainActivity extends AppCompatActivity implements ViewModelCommunic
     public MainActivityViewModel getViewModel() {
         return viewModel;
     }
+
 }
