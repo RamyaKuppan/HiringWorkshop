@@ -17,9 +17,10 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="4dp"
         android:layout_toStartOf="@id/channel_btn"
+        android:hint="Anonymous"
         android:maxLines="2"
         android:textColor="@android:color/black"
-        android:textSize="28sp"
+        android:textSize="20sp"
         tools:text="Prasanna" />
 
     <TextView
@@ -29,13 +30,18 @@
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="4dp"
         android:layout_toStartOf="@id/channel_btn"
+        android:hint="No comments"
         android:maxLines="2"
         android:textColor="@android:color/black"
-        android:textSize="28sp"
+        android:textSize="24sp"
         tools:text="Nice video" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black_translucent_60" />
 
 </LinearLayout>

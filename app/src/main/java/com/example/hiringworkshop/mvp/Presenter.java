@@ -1,9 +1,10 @@
 package com.example.hiringworkshop.mvp;
 
-import android.support.annotation.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.Observer;
+
+import androidx.annotation.Nullable;
 
 public abstract class Presenter<E extends PresenterToViewCallback> implements Observer {
 

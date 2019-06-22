@@ -1,10 +1,11 @@
 package com.example.hiringworkshop.mvp;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 
 import java.lang.ref.WeakReference;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class ActivityView<T extends Presenter, E extends PresenterToViewCallback> extends AppCompatActivity implements View<T, E> {
 

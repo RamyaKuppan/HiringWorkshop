@@ -1,7 +1,7 @@
-package com.example.hiringworkshop.network;
+package com.example.hiringworkshop.restApi;
 
-import com.example.hiringworkshop.models.VideoComment;
-import com.example.hiringworkshop.models.VideoDetail;
+import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
+import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 
 import java.util.List;
 
@@ -15,9 +15,9 @@ public interface APIService {
     @GET("workshop/video")
     Call<VideoDetail> getMovieDetail();
 
-    @GET("workshop/video/comments")
+    @GET("workshop/comments")
     Call<List<VideoComment>> getVideoComments();
 
-    @POST("workshop/video/comments")
+    @POST("workshop/comments")
     Call<List<VideoComment>> uploadVideoComment(@Body VideoComment videoComment);
 }

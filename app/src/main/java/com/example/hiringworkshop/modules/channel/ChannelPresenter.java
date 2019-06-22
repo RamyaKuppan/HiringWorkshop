@@ -1,13 +1,13 @@
 package com.example.hiringworkshop.modules.channel;
 
-import android.support.annotation.NonNull;
-
 import com.example.hiringworkshop.models.ChannelDetail;
-import com.example.hiringworkshop.models.VideoDetail;
+import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 import com.example.hiringworkshop.mvp.Presenter;
 import com.example.hiringworkshop.repositories.VideoRepository;
 
 import java.util.Observable;
+
+import androidx.annotation.NonNull;
 
 public class ChannelPresenter extends Presenter<ChannelPresenterCallback> {
 

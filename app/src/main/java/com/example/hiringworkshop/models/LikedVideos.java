@@ -1,5 +1,7 @@
 package com.example.hiringworkshop.models;
 
+import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
+
 import java.util.List;
 
 public class LikedVideos {

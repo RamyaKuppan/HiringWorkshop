@@ -1,13 +1,15 @@
 package com.example.hiringworkshop.modules.detail;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,12 +17,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.hiringworkshop.R;
 import com.example.hiringworkshop.models.ChannelDetail;
-import com.example.hiringworkshop.models.VideoComment;
-import com.example.hiringworkshop.models.VideoDetail;
+import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
+import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 import com.example.hiringworkshop.modules.channel.ChannelActivity;
 import com.example.hiringworkshop.mvp.ActivityView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
+
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class VideoDetailActivity extends ActivityView<VideoDetailPresenter, DetailPresenterCallback> implements DetailPresenterCallback {
 
@@ -32,6 +39,8 @@ public class VideoDetailActivity extends ActivityView<VideoDetailPresenter, Deta
     private ProgressBar progressBar;
     private RecyclerView commentsListview;
     private FloatingActionButton addCommentFabBtn;
+    private VideoDetailRecyclerViewAdapter videoDetailRecyclerViewAdapter;
+    private Dialog addCommentDialog;
 
     public static void openVideoDetail(Activity activity) {
         Intent intent = new Intent(activity, VideoDetailActivity.class);
@@ -52,7 +61,51 @@ public class VideoDetailActivity extends ActivityView<VideoDetailPresenter, Deta
         commentsListview = findViewById(R.id.comments_list_view);
         addCommentFabBtn = findViewById(R.id.add_comment);
 
+        if (commentsListview != null) {
+            commentsListview.setLayoutManager(new LinearLayoutManager(this));
+        }
+
         getPresenter().getMovieDetail();
+        getPresenter().getComments();
+
+        if (addCommentFabBtn != null) {
+            addCommentFabBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showAddCommentDialog();
+                }
+            });
+        }
+    }
+
+    private void showAddCommentDialog() {
+        if (addCommentDialog == null) {
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Add Comment");
+
+            final EditText commentEditText = new EditText(this);
+            commentEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_LONG_MESSAGE);
+            builder.setView(commentEditText);
+
+            builder.setPositiveButton("Comment", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    String comment = commentEditText.getText().toString();
+                    getPresenter().addComment(comment);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            addCommentDialog = builder.create();
+        }
+
+        addCommentDialog.show();
     }
 
     @Override
@@ -79,6 +132,12 @@ public class VideoDetailActivity extends ActivityView<VideoDetailPresenter, Deta
         }
         if (videoNameText != null) {
             videoNameText.setText(videoDetail.getDescription());
+            videoNameText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ChannelActivity.openChannelActivity(VideoDetailActivity.this);
+                }
+            });
         }
         Glide.with(this).load(videoDetail.getImage()).into(videoImageView);
         if (likeBtn != null) {
@@ -108,10 +167,12 @@ public class VideoDetailActivity extends ActivityView<VideoDetailPresenter, Deta
     public void showChannelInfo(ChannelDetail channelDetail) {
         if (subscribeBtn != null) {
             if (channelDetail.isSubscribed()) {
-                subscribeBtn.setText("Subscribed!");
+                subscribeBtn.setText(getString(R.string.subscribed));
+                subscribeBtn.setTextColor(ActivityCompat.getColor(this, android.R.color.white));
                 subscribeBtn.setBackgroundColor(ActivityCompat.getColor(this, R.color.colorPrimary));
             } else {
-                subscribeBtn.setText("Subscribe");
+                subscribeBtn.setText(getString(R.string.subscribe));
+                subscribeBtn.setTextColor(ActivityCompat.getColor(this, android.R.color.white));
                 subscribeBtn.setBackgroundColor(ActivityCompat.getColor(this, R.color.colorAccent));
             }
 
@@ -141,7 +202,14 @@ public class VideoDetailActivity extends ActivityView<VideoDetailPresenter, Deta
 
     @Override
     public void showComments(List<VideoComment> videoCommentList) {
-
+        if (commentsListview != null) {
+            if (videoDetailRecyclerViewAdapter == null) {
+                videoDetailRecyclerViewAdapter = new VideoDetailRecyclerViewAdapter(videoCommentList);
+                commentsListview.setAdapter(videoDetailRecyclerViewAdapter);
+            } else {
+                videoDetailRecyclerViewAdapter.setAndUpdate(videoCommentList);
+            }
+        }
     }
 
     @Override

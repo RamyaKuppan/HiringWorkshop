@@ -3,7 +3,6 @@ package com.example.hiringworkshop.modules.channel;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +13,8 @@ import com.example.hiringworkshop.R;
 import com.example.hiringworkshop.models.ChannelDetail;
 import com.example.hiringworkshop.modules.detail.VideoDetailActivity;
 import com.example.hiringworkshop.mvp.ActivityView;
+
+import androidx.core.app.ActivityCompat;
 
 public class ChannelActivity extends ActivityView<ChannelPresenter, ChannelPresenterCallback> implements ChannelPresenterCallback {
 
@@ -57,10 +58,12 @@ public class ChannelActivity extends ActivityView<ChannelPresenter, ChannelPrese
     public void showChannelDetail(final ChannelDetail channelDetail) {
         channelNameText.setText(channelDetail.getChannel());
         if (channelDetail.isSubscribed()) {
-            subscribeBtn.setText("Subscribed!");
+            subscribeBtn.setText(getString(R.string.subscribed));
+            subscribeBtn.setTextColor(ActivityCompat.getColor(this, android.R.color.white));
             subscribeBtn.setBackgroundColor(ActivityCompat.getColor(this, R.color.colorPrimary));
         } else {
-            subscribeBtn.setText("Subscribe!");
+            subscribeBtn.setText(getString(R.string.subscribe));
+            subscribeBtn.setTextColor(ActivityCompat.getColor(this, android.R.color.white));
             subscribeBtn.setBackgroundColor(ActivityCompat.getColor(this, R.color.colorAccent));
         }
 

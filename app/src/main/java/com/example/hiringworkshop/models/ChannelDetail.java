@@ -1,5 +1,7 @@
 package com.example.hiringworkshop.models;
 
+import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
+
 public class ChannelDetail {
 
     private String channel;

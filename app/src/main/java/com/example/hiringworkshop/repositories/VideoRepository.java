@@ -1,12 +1,17 @@
 package com.example.hiringworkshop.repositories;
 
-import android.support.annotation.NonNull;
-
+import com.example.hiringworkshop.db.VideoAppDbManager;
+import com.example.hiringworkshop.db.dbModels.VideoAndLikedData;
+import com.example.hiringworkshop.db.dbModels.VideoDbData;
 import com.example.hiringworkshop.models.ChannelDetail;
-import com.example.hiringworkshop.models.VideoDetail;
 import com.example.hiringworkshop.mvp.DataRepository;
-import com.example.hiringworkshop.network.APIManager;
+import com.example.hiringworkshop.restApi.APIManager;
+import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
+import com.example.hiringworkshop.threads.AppAsyncTask;
 
+import java.util.List;
+
+import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,17 +45,77 @@ public class VideoRepository extends DataRepository {
                         mChannelDetail.setSubscribed(MockRest.getInstance().getSubscribedChannels().contains(mChannelDetail));
                         mChannelDetail.setVideoDetails(new VideoDetail[]{mVideoDetail});
                         movieDetailCallback.showDetail(mVideoDetail, mChannelDetail);
+
+                        updateDataToDb(mVideoDetail, mChannelDetail);
+
                     } else {
-                        movieDetailCallback.showError(response.code());
+                        getVideoDataFromDb(movieDetailCallback);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<VideoDetail> call, Throwable t) {
-                    movieDetailCallback.showError(0);
+                    getVideoDataFromDb(movieDetailCallback);
                 }
             });
         }
+    }
+
+    private void updateDataToDb(VideoDetail mVideoDetail, ChannelDetail mChannelDetail) {
+
+        AppAsyncTask appAsyncTask = new AppAsyncTask<Void>(new AppAsyncTask.AppAsyncCallback<Void>() {
+            @Override
+            public Void doInBackGround() {
+                VideoDbData videoDbData = new VideoDbData();
+                videoDbData.setChannelId(1L);
+                videoDbData.setName(mVideoDetail.getDescription());
+                videoDbData.setVideoImageUrl(mVideoDetail.getImage());
+                videoDbData.setViews(mVideoDetail.getViews());
+
+                VideoAppDbManager.getInstance().getDatabase().getVideoDao().insertVideo(videoDbData);
+                return null;
+            }
+
+            @Override
+            public void onPost(Void aVoid) {
+
+            }
+        });
+
+        appAsyncTask.execute();
+
+    }
+
+    private void getVideoDataFromDb(MovieDetailCallback movieDetailCallback) {
+
+        AppAsyncTask<List<VideoAndLikedData>> appAsyncTask = new AppAsyncTask<List<VideoAndLikedData>>(new AppAsyncTask.AppAsyncCallback<List<VideoAndLikedData>>() {
+            @Override
+            public List<VideoAndLikedData> doInBackGround() {
+                return VideoAppDbManager.getInstance().getDatabase().getVideoDao().getVideoDataList();
+            }
+
+            @Override
+            public void onPost(List<VideoAndLikedData> videoAndLikedData) {
+                if (videoAndLikedData != null && videoAndLikedData.size() > 0) {
+                    VideoDetail videoDetail = new VideoDetail();
+                    videoDetail.setDescription(videoAndLikedData.get(0).getVideoDbData().getName());
+                    videoDetail.setChannel(videoAndLikedData.get(0).getVideoDbData().getName());
+
+                    ChannelDetail channelDetail = new ChannelDetail();
+                    channelDetail.setChannel("bla bla");
+                    if (movieDetailCallback != null) {
+                        movieDetailCallback.showDetail(videoDetail, channelDetail);
+                    }
+                } else {
+                    if (movieDetailCallback != null) {
+                        movieDetailCallback.showError(0);
+                    }
+                }
+
+            }
+        });
+
+        appAsyncTask.execute();
     }
 
     private void notifyVideoDetail() {

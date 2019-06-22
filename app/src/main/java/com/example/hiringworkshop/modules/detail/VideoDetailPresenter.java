@@ -1,16 +1,16 @@
 package com.example.hiringworkshop.modules.detail;
 
-import android.support.annotation.NonNull;
-
 import com.example.hiringworkshop.models.ChannelDetail;
-import com.example.hiringworkshop.models.VideoComment;
-import com.example.hiringworkshop.models.VideoDetail;
+import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
+import com.example.hiringworkshop.restApi.restApiModels.VideoDetail;
 import com.example.hiringworkshop.mvp.Presenter;
 import com.example.hiringworkshop.repositories.VideoCommentsRepository;
 import com.example.hiringworkshop.repositories.VideoRepository;
 
 import java.util.List;
 import java.util.Observable;
+
+import androidx.annotation.NonNull;
 
 public class VideoDetailPresenter extends Presenter<DetailPresenterCallback> {
 
@@ -92,5 +92,24 @@ public class VideoDetailPresenter extends Presenter<DetailPresenterCallback> {
                 }
             }
         }
+    }
+
+    public void addComment(String comment) {
+
+        VideoComment videoComment = new VideoComment();
+        videoComment.setName("Prasanna");
+        videoComment.setComment(comment);
+
+        VideoCommentsRepository.getInstance().addComment(videoComment, new VideoCommentsRepository.VideoCommentsCallback() {
+            @Override
+            public void showVideComments(List<VideoComment> videoCommentList) {
+                //Show success..
+            }
+
+            @Override
+            public void showError(int responseCode) {
+                //Show failure.
+            }
+        });
     }
 }

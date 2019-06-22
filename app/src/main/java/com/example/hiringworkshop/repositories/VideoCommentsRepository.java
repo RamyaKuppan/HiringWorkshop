@@ -1,12 +1,13 @@
 package com.example.hiringworkshop.repositories;
 
-import com.example.hiringworkshop.models.VideoComment;
+import com.example.hiringworkshop.restApi.restApiModels.VideoComment;
 import com.example.hiringworkshop.mvp.DataRepository;
-import com.example.hiringworkshop.network.APIManager;
+import com.example.hiringworkshop.restApi.APIManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +46,7 @@ public class VideoCommentsRepository extends DataRepository {
         }
     }
 
-    public void addComment(final VideoComment videoComment, final VideoCommentsCallback videoCommentsCallback) {
+    public void addComment(final VideoComment videoComment, @Nullable final VideoCommentsCallback videoCommentsCallback) {
 
         if (mVideoComments == null) {
             mVideoComments = new ArrayList<>();
@@ -57,15 +58,21 @@ public class VideoCommentsRepository extends DataRepository {
             public void onResponse(Call<List<VideoComment>> call, Response<List<VideoComment>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     mVideoComments = response.body();
-                    videoCommentsCallback.showVideComments(mVideoComments);
+                    if (videoCommentsCallback != null) {
+                        videoCommentsCallback.showVideComments(mVideoComments);
+                    }
                 } else {
-                    videoCommentsCallback.showError(response.code());
+                    if(videoCommentsCallback != null) {
+                        videoCommentsCallback.showError(response.code());
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<List<VideoComment>> call, Throwable t) {
-                videoCommentsCallback.showError(0);
+                if(videoCommentsCallback != null) {
+                    videoCommentsCallback.showError(0);
+                }
             }
         });
     }
