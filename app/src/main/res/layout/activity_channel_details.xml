@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="videoData"
+            type="com.example.hiringworkshop.model.response.VideoViewData" />
         <variable
             name="channel"
             type="com.example.hiringworkshop.viewmodel.VideoViewModel" />
     </data>
 
     <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
@@ -20,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dimen_34dp"
+            android:text="@{videoData.description}"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/dimen_14sp" />
 
@@ -28,6 +33,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_desc"
+            android:text="@{videoData.channelOwner}"
             android:layout_marginTop="@dimen/dimen_34dp"
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/dimen_14sp" />
@@ -40,6 +46,8 @@
             android:background="@color/colorPrimaryDark"
             android:paddingStart="@dimen/dimen_16sp"
             android:paddingEnd="@dimen/dimen_16sp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorAccent"
             android:text="@string/subscribe_me"
             android:textAllCaps="false" />
 

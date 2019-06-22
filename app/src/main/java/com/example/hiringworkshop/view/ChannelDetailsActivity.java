@@ -22,36 +22,24 @@ public class ChannelDetailsActivity extends BaseActivity<ActivityChannelDetailsB
 
     Bundle bundle;
     VideoViewData data;
-    AppCompatTextView mChannelDesc, mTvOwner;
-    AppCompatButton mSubscribeMe;
-    boolean isSubscribed =false, isClicked = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mChannelDesc = findViewById(R.id.tv_desc);
-        mTvOwner = findViewById(R.id.tv_channel_owner);
-        mSubscribeMe = findViewById(R.id.bt_subscribe);
-
         bundle = getIntent().getExtras();
 
         if (bundle != null && bundle.getParcelable(VIDEO_DATA) != null) {
             data = bundle.getParcelable(VIDEO_DATA);
-            mChannelDesc.setText(data.getDescription());
-            mTvOwner.setText(data.getChannelOwner());
+            binding.setVideoData(data);
         }
 
-        if (VideoDetails.getInstance().isSubscribed){
-            mSubscribeMe.setText("Subscribed");
-        }else {
-            mSubscribeMe.setText(getString(R.string.subscribe_me));
-        }
+        updateSubscription();
 
-        mSubscribeMe.setOnClickListener(this);
 
-        // Updated the state
-        isClicked = VideoDetails.getInstance().isSubscribed;
+        binding.btSubscribe.setOnClickListener(this);
     }
 
     @Override
@@ -74,20 +62,22 @@ public class ChannelDetailsActivity extends BaseActivity<ActivityChannelDetailsB
     @Override
     public void onClick(View view) {
 
-        if (!isClicked) {
-            isClicked = true;
-            mSubscribeMe.setText("Subscribed");
-        } else {
-            isClicked = false;
-            mSubscribeMe.setText(getString(R.string.subscribe_me));
+        updateSubscription();
 
-        }
-
-        // Saved the subscribe state
-        VideoDetails.getInstance().setSubscribed(isClicked);
+        // Saved the subscription
+        VideoDetails.getInstance().setSubscribe(binding.btSubscribe.getText().toString());
 
         // finish with success result code
         setResult(Activity.RESULT_OK);
         finish();
+    }
+
+
+    private void updateSubscription(){
+        if (binding.btSubscribe.getText().toString().equals(getString(R.string.subscribed))){
+            binding.btSubscribe.setText(getString(R.string.subscribe_me));
+        }else {
+            binding.btSubscribe.setText(getString(R.string.subscribed));
+        }
     }
 }

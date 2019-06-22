@@ -9,4 +9,5 @@
     <string name="add_comments">Add Comments</string>
     <string name="add_comments_hint">Comment here..</string>
     <string name="click_here">Click Here</string>
+    <string name="send">Send</string>
 </resources>

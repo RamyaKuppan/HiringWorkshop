@@ -3,7 +3,7 @@ package com.example.hiringworkshop.model;
 public class VideoDetails {
 
     public static VideoDetails videoDetails;
-    public boolean isSubscribed;
+    public String subscribe;
 
     public static VideoDetails getInstance() {
         if (videoDetails == null) {
@@ -13,11 +13,11 @@ public class VideoDetails {
         return videoDetails;
     }
 
-    public boolean isSubscribed() {
-        return isSubscribed;
+    public String getSubscribe() {
+        return subscribe;
     }
 
-    public void setSubscribed(boolean subscribed) {
-        isSubscribed = subscribed;
+    public void setSubscribe(String subscribe) {
+        this.subscribe = subscribe;
     }
 }

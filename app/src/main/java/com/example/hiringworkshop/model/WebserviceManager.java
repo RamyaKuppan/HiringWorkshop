@@ -3,28 +3,49 @@ package com.example.hiringworkshop.model;
 
 import androidx.annotation.Nullable;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.example.hiringworkshop.model.request.SendCommentsRequest;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class WebserviceManager<T> extends Request<String> {
 
     Type responseType;
     T data;
     List<T> listOfData;
+    SendCommentsRequest object;
     private IWebserviceListener listener;
 
     public WebserviceManager(int method, String url, Type responseType, @Nullable IWebserviceListener listener) {
         super(method, url, null);
         this.listener = listener;
         this.responseType = responseType;
+    }
+
+    public void post(SendCommentsRequest obj) {
+        this.object = obj;
+    }
+
+    @Override
+    public Map<String, String> getHeaders() throws AuthFailureError {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("Content-Type", "application/json; charset=utf-8");
+        return headers;
+    }
+
+    @Override
+    public byte[] getBody() throws AuthFailureError {
+        return object.toString().getBytes();
     }
 
     @Override
@@ -67,8 +88,8 @@ public class WebserviceManager<T> extends Request<String> {
 
 
     /**
-     *  Converting String response to Respective Model Type
-     * */
+     * Converting String response to Respective Model Type
+     */
 
     private T getResponseData(String response, Type responseType) {
         return new Gson().fromJson(response, responseType);

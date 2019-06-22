@@ -3,6 +3,7 @@ package com.example.hiringworkshop.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
@@ -13,35 +14,38 @@ import com.example.hiringworkshop.R;
 import com.example.hiringworkshop.adapter.CommentsAdapter;
 import com.example.hiringworkshop.databinding.ActivityVideoDetailsBinding;
 import com.example.hiringworkshop.model.Constants;
-import com.example.hiringworkshop.model.response.CommentsData;
 import com.example.hiringworkshop.model.VideoDetails;
+import com.example.hiringworkshop.model.response.CommentsData;
 import com.example.hiringworkshop.viewmodel.VideoViewModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class VideoDetailsActivity extends BaseActivity<ActivityVideoDetailsBinding, VideoViewModel> {
 
-    CommentsAdapter mAdaprer;
+    CommentsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding.setUpdateLike(getString(R.string.like));
 
+        // Send Video Details Request
         mViewModel.sendVideoDetailsRequest();
+
+        // Send Request to get Comments
         mViewModel.sendGetCommentsRequest();
 
+
+        // Observer latest video data to views
         mViewModel.getVideoViewData().observe(this, data -> binding.setVideoData(data));
 
-        mViewModel.getBundleVideoData().observe(this, mBundle -> {
+
+        binding.tvClickHere.setOnClickListener(view -> {
             Intent intent = new Intent(VideoDetailsActivity.this, ChannelDetailsActivity.class);
-            if (mBundle != null) {
-                intent.putExtras(mBundle);
-            }
-            startActivityForResult(intent, Constants.RequestCodes.SUBSCRIBE_REQUEST);
+            startActivity(intent);
         });
 
+        // Updated the state of like an liked
         binding.btLike.setOnClickListener(view -> {
             if (binding.btLike.getText().toString().equals(getString(R.string.like))) {
                 binding.setUpdateLike(getString(R.string.liked));
@@ -50,13 +54,11 @@ public class VideoDetailsActivity extends BaseActivity<ActivityVideoDetailsBindi
             }
         });
 
-        mViewModel.getCommentsData().observe(this, new Observer<List<CommentsData>>() {
-            @Override
-            public void onChanged(List<CommentsData> commentsData) {
+        // Update Recyclerview with comments
+        mViewModel.getCommentsData().observe(this, commentsData -> {
+            mAdapter = new CommentsAdapter(commentsData, null);
+            binding.rvCommentsList.setAdapter(mAdapter);
 
-                mAdaprer = new CommentsAdapter(commentsData,null);
-                binding.rvCommentsList.setAdapter(mAdaprer);
-            }
         });
     }
 
@@ -90,12 +92,9 @@ public class VideoDetailsActivity extends BaseActivity<ActivityVideoDetailsBindi
 
         if (requestCode == Constants.RequestCodes.SUBSCRIBE_REQUEST && resultCode == Activity.RESULT_OK) {
 
-            if (VideoDetails.getInstance().isSubscribed) {
-                binding.btSubscription.setText(getString(R.string.subscribed));
-            } else {
-                binding.btSubscription.setText(getString(R.string.not_subscribe));
-            }
+            binding.btSubscription.setText(VideoDetails.getInstance().getSubscribe());
         }
 
     }
+
 }

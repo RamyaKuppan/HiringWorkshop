@@ -9,9 +9,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.android.volley.Request;
 import com.example.hiringworkshop.VideoApplication;
-import com.example.hiringworkshop.adapter.CommentsAdapter;
+import com.example.hiringworkshop.adapter.listener.BaseRecyclerAdapterListener;
 import com.example.hiringworkshop.model.IWebserviceListener;
 import com.example.hiringworkshop.model.WebserviceManager;
+import com.example.hiringworkshop.model.request.SendCommentsRequest;
 import com.example.hiringworkshop.model.response.CommentsData;
 import com.example.hiringworkshop.model.response.VideoViewData;
 import com.google.gson.reflect.TypeToken;
@@ -21,6 +22,7 @@ import java.util.List;
 
 import static com.example.hiringworkshop.model.Constants.BundleKKey.VIDEO_DATA;
 import static com.example.hiringworkshop.model.Constants.HttpUrls.COMMENTS;
+import static com.example.hiringworkshop.model.Constants.HttpUrls.POST_COMMENTS;
 import static com.example.hiringworkshop.model.Constants.HttpUrls.VIDEO_URL;
 
 public class VideoViewModel extends ViewModel {
@@ -28,7 +30,10 @@ public class VideoViewModel extends ViewModel {
     private MutableLiveData<VideoViewData> videoViewData = new MutableLiveData<>();
     private MutableLiveData<List<CommentsData>> commentsData = new MutableLiveData<>();
     private MutableLiveData<Bundle> bundleVideoData = new MutableLiveData<>();
-    private CommentsAdapter mAdapter;
+
+    /**
+     *  Sending VideoDetails API Request
+     * */
 
     public void sendVideoDetailsRequest() {
         Type responseType = new TypeToken<VideoViewData>() {}.getType();
@@ -57,6 +62,10 @@ public class VideoViewModel extends ViewModel {
             Log.e("VideoDetailsActivity", "Error is : " + error);
         }
     };
+
+    /**
+     *  Sending Get Comments API Request
+     * */
 
     public void sendGetCommentsRequest() {
         Type responseType = new TypeToken<List<CommentsData>>() {}.getType();
@@ -89,6 +98,20 @@ public class VideoViewModel extends ViewModel {
         Bundle bundle = new Bundle();
         bundle.putParcelable(VIDEO_DATA, data);
         getBundleVideoData().postValue(bundle);
+    }
+
+    /**
+     *  Post Comments API request
+     * */
+
+    public void postComments(String comments){
+        if (comments!=null && !comments.isEmpty()){
+            SendCommentsRequest request = new SendCommentsRequest("Douglas", comments);
+            Type responseType = new TypeToken<List<CommentsData>>() {}.getType();
+            WebserviceManager<CommentsData> manager = new WebserviceManager<>(Request.Method.POST, POST_COMMENTS, responseType, iCommentsListener);
+            manager.post(request);
+            VideoApplication.getInstance().addToRequestQueue(manager, "GetComments");
+        }
     }
 
     public MutableLiveData<VideoViewData> getVideoViewData() {

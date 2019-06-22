@@ -41,6 +41,7 @@ public abstract class BaseActivity<DB extends ViewDataBinding, VM extends ViewMo
         binding.executePendingBindings();
     }
 
+
     abstract int getLayoutId();
 
     abstract VM getViewModel();
