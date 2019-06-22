@@ -24,6 +24,6 @@ public interface VideoService {
 
     @Headers("Content-Type: application/json")
     @POST("workshop/comment")
-    Call<Object> postComment(@Body CommentRequestData data);
+    Call<List<CommentResponseData>> postComment(@Body CommentRequestData data);
 
 }

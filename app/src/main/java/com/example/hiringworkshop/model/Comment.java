@@ -1,25 +1,39 @@
 package com.example.hiringworkshop.model;
 
 import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
 public class Comment {
 
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_COMMENT = "comment";
+    public static final String COLUMN_TIMESTAMP = "timestamp";
+
+    @PrimaryKey
+    @ColumnInfo(name = COLUMN_ID)
     @SerializedName("id")
     String id;
-    User user;
+    @ColumnInfo(name = COLUMN_COMMENT)
     @SerializedName("comment")
     String comment;
+    @ColumnInfo(name = COLUMN_TIMESTAMP)
     @SerializedName("timestamp")
-    long timestamp;
+    String timestamp;
+
+//    User user;
 
     public User getUser() {
-        return user;
+        // todo.. get it from user, using commentId..
+//        return user;
+        return null;
     }
 
     public void setUser(User user) {
-        this.user = user;
+//        this.user = user;
     }
 
     public String getComment() {
@@ -38,12 +52,12 @@ public class Comment {
         this.id = id;
     }
 
-    public long getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
     public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
+        this.timestamp = String.valueOf(timestamp);
     }
 
     @Override
