@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ import java.util.List;
 
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements
+public class VideoDescriptionActivity extends AppCompatActivity implements
         ResponseListener, FragmentManager.OnBackStackChangedListener {
 
     private Button ivLike;
@@ -44,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements
 
     private RecyclerView rvComments;
 
+    private Button btnSubmitComments;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +55,13 @@ public class MainActivity extends AppCompatActivity implements
         fragmentHandler = new Handler();
         ivVideoThumbnail = findViewById(R.id.iv_video_thumbnail);
         tvChannelName = findViewById(R.id.tv_channel_desc);
+        btnSubmitComments = findViewById(R.id.btn_submit_comment);
         btnSubscribe = findViewById(R.id.btn_subscribe);
         rvComments = findViewById(R.id.rv_list_comments);
         setOnClickListeners();
         videoDescriptionViewModel = ViewModelProviders.of(this).get(VideoDescriptionViewModel.class);
         videoDescriptionViewModel.setResponseListener(this);
-        videoDescriptionViewModel.makeApiCall();
+        videoDescriptionViewModel.getVideoDetails();
         updateUIAfterOrientationChanges();
     }
 
@@ -89,6 +93,16 @@ public class MainActivity extends AppCompatActivity implements
             btnSubscribe.setText("Subscribed");
             if (mVideoModel != null)
                 addFragment(ChannelInfoFragment.newInstance(mVideoModel), true);
+        });
+
+        btnSubmitComments.setOnClickListener(v -> {
+            EditText etComments = findViewById(R.id.et_comments);
+            String comments = etComments.getText().toString();
+            if (!etComments.getText().toString().isEmpty()) {
+                videoDescriptionViewModel.uploadComments(comments);
+            } else {
+                Toast.makeText(this, "Please type in the comments", Toast.LENGTH_SHORT).show();
+            }
         });
 
     }

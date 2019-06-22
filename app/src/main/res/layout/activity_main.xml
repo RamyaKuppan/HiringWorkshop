@@ -6,7 +6,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.MainActivity">
+    tools:context=".views.VideoDescriptionActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -66,6 +66,7 @@
             app:layout_constraintLeft_toLeftOf="parent" />
 
         <Button
+            android:id="@+id/btn_submit_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="submit"

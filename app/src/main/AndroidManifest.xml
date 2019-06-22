@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.MainActivity">
+        <activity android:name=".views.VideoDescriptionActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

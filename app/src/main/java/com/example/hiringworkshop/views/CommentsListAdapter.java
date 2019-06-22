@@ -15,6 +15,10 @@ import java.util.List;
 
 import retrofit2.Response;
 
+/**
+ * CommentsListAdapter
+ * This adapter class is for setting up the comments list to the recycler view
+ */
 public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapter.CommentsViewHolder> {
 
 
@@ -22,6 +26,12 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
     private static List<CommentsModel> mCommentsModel;
 
+    /**
+     * parameterised constructor
+     *
+     * @param mContext context
+     * @param comments comments
+     */
     public CommentsListAdapter(Context mContext, Response<List<CommentsModel>> comments) {
         context = mContext;
         mCommentsModel = comments.body();
@@ -44,12 +54,21 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
         return mCommentsModel.size();
     }
 
+    /**
+     * CommentsViewHolder
+     * View Holder for the CommentsListAdapter
+     */
     public class CommentsViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvUserName;
 
         TextView tvComments;
 
+        /**
+         * constructor for view holder
+         *
+         * @param itemView item view
+         */
         public CommentsViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUserName = itemView.findViewById(R.id.tv_name);

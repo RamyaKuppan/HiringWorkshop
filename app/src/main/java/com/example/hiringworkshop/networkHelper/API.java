@@ -6,7 +6,9 @@ import com.example.hiringworkshop.models.VideoModel;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface API {
     @GET("api/workshop/video")
@@ -14,5 +16,8 @@ public interface API {
 
     @GET("api/workshop/comments")
     Call<List<CommentsModel>> getCommentsList();
+
+    @POST("api/workshop/comments")
+    Call postComments(@Body CommentsModel commentsModel);
 }
 
