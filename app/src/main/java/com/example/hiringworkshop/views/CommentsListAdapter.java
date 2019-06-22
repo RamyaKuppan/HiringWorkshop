@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.hiringworkshop.OnReplyClicked;
 import com.example.hiringworkshop.R;
 import com.example.hiringworkshop.models.CommentsModel;
 
@@ -26,15 +27,18 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
     private static List<CommentsModel> mCommentsModel;
 
+    private static OnReplyClicked mOnReplyClicked;
+
     /**
      * parameterised constructor
      *
      * @param mContext context
      * @param comments comments
      */
-    public CommentsListAdapter(Context mContext, Response<List<CommentsModel>> comments) {
+    public CommentsListAdapter(Context mContext, Response<List<CommentsModel>> comments, OnReplyClicked onReplyClicked) {
         context = mContext;
         mCommentsModel = comments.body();
+        mOnReplyClicked = onReplyClicked;
     }
 
     @NonNull
@@ -47,6 +51,10 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
     public void onBindViewHolder(@NonNull CommentsViewHolder commentsViewHolder, int i) {
         commentsViewHolder.tvUserName.setText(mCommentsModel.get(i).getUser());
         commentsViewHolder.tvComments.setText(mCommentsModel.get(i).getComment());
+        if (mCommentsModel.get(i).getReplies().size() > 0) {
+            commentsViewHolder.tvReply.setVisibility(View.VISIBLE);
+            commentsViewHolder.tvReply.setText(mCommentsModel.get(i).getReply());
+        }
     }
 
     @Override
@@ -64,6 +72,8 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
 
         TextView tvComments;
 
+        TextView tvReply;
+
         /**
          * constructor for view holder
          *
@@ -73,6 +83,13 @@ public class CommentsListAdapter extends RecyclerView.Adapter<CommentsListAdapte
             super(itemView);
             tvUserName = itemView.findViewById(R.id.tv_name);
             tvComments = itemView.findViewById(R.id.tv_comments);
+            tvComments.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mOnReplyClicked.onReplyClicked(getAdapterPosition());
+                }
+            });
+            tvReply = itemView.findViewById(R.id.tv_reply_comments);
         }
     }
 }

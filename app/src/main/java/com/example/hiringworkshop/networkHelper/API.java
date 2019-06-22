@@ -35,5 +35,9 @@ public interface API {
      */
     @POST("api/workshop/comment")
     Call<CommentsModel> postComments(@Body CommentsModel commentsModel);
+
+
+    @POST("api/workshop/reply")
+    Call<CommentsModel> replyToAComment(@Body CommentsModel commentsModel);
 }
 

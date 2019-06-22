@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.example.hiringworkshop.ResponseListener;
 import com.example.hiringworkshop.models.CommentsModel;
+import com.example.hiringworkshop.models.RepliesModel;
 import com.example.hiringworkshop.models.VideoModel;
 import com.example.hiringworkshop.networkHelper.RetrofitHelper;
 
@@ -138,6 +139,26 @@ public class VideoDescriptionViewModel extends ViewModel {
                     realm.where(VideoModel.class).findFirst();
             if (iResponseListener != null) {
                 iResponseListener.onDBDataReady(video);
+            }
+        });
+    }
+
+    public void replyToAComment(String id, String reply) {
+        CommentsModel commentsModel = new CommentsModel();
+        commentsModel.setId(id);
+        commentsModel.setReply(reply);
+        commentsModel.setUser("Bala");
+        RetrofitHelper.getInstance().getAPI().replyToAComment(commentsModel).enqueue(new Callback<CommentsModel>() {
+            @Override
+            public void onResponse(Call<CommentsModel> call, Response<CommentsModel> response) {
+                if (iResponseListener != null && response.isSuccessful()) {
+                    iResponseListener.onResponse(response, "reply");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CommentsModel> call, Throwable t) {
+
             }
         });
     }

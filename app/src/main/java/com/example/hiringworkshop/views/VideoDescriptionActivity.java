@@ -6,9 +6,11 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.hiringworkshop.DatabaseRepo.RealmDB;
 import com.example.hiringworkshop.DatabaseRepo.VideoTable;
+import com.example.hiringworkshop.OnReplyClicked;
 import com.example.hiringworkshop.R;
 import com.example.hiringworkshop.ResponseListener;
 import com.example.hiringworkshop.models.CommentsModel;
@@ -32,7 +35,7 @@ import io.realm.Realm;
 import retrofit2.Response;
 
 public class VideoDescriptionActivity extends AppCompatActivity implements
-        ResponseListener, FragmentManager.OnBackStackChangedListener {
+        ResponseListener, FragmentManager.OnBackStackChangedListener, OnReplyClicked {
 
     private Button ivLike;
 
@@ -41,6 +44,8 @@ public class VideoDescriptionActivity extends AppCompatActivity implements
     private VideoDescriptionViewModel videoDescriptionViewModel;
 
     private Button btnSubscribe;
+
+    private List<CommentsModel> commentsModelsList;
 
     private TextView tvChannelName;
 
@@ -54,15 +59,12 @@ public class VideoDescriptionActivity extends AppCompatActivity implements
 
     private VideoTable videoTable;
 
-    private Realm realm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RealmDB realmDB = new RealmDB(getApplicationContext());
         realmDB.setUpRealm();
-        realm = Realm.getDefaultInstance();
         videoTable = new VideoTable(this);
         ivLike = findViewById(R.id.iv_like);
         fragmentHandler = new Handler();
@@ -172,7 +174,11 @@ public class VideoDescriptionActivity extends AppCompatActivity implements
             videoTable.writeVideo(mVideoModel);
         } else if (response.body() != null && identifier.equals("comments")) {
             Response<List<CommentsModel>> comments = (Response<List<CommentsModel>>) response;
+            commentsModelsList = comments.body();
             setCommentsDataToUI(comments);
+        } else if (response.body() != null && identifier.equals("reply")) {
+            Response<List<CommentsModel>> comments = (Response<List<CommentsModel>>) response;
+
         }
     }
 
@@ -182,7 +188,7 @@ public class VideoDescriptionActivity extends AppCompatActivity implements
      * @param comments comments list
      */
     private void setCommentsDataToUI(Response<List<CommentsModel>> comments) {
-        rvComments.setAdapter(new CommentsListAdapter(this, comments));
+        rvComments.setAdapter(new CommentsListAdapter(this, comments, this));
         rvComments.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -206,5 +212,29 @@ public class VideoDescriptionActivity extends AppCompatActivity implements
     @Override
     public void onBackStackChanged() {
         //yet to implement
+    }
+
+    @Override
+    public void onReplyClicked(int pos) {
+        showAlertDialog(pos);
+    }
+
+    private void showAlertDialog(int pos) {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.reply_alert_window, null);
+        dialogBuilder.setView(dialogView);
+        EditText editText = dialogView.findViewById(R.id.et_reply);
+        Button button = dialogView.findViewById(R.id.btn_reply);
+
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        if (mVideoModel != null) {
+            button.setOnClickListener(v -> {
+                videoDescriptionViewModel.
+                        replyToAComment(commentsModelsList.get(pos).getId(), editText.getText().toString());
+                alertDialog.dismiss();
+            });
+        }
     }
 }
