@@ -1,22 +1,24 @@
 package com.example.hiringworkshop.view;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.example.hiringworkshop.BR;
 import com.example.hiringworkshop.R;
+import com.example.hiringworkshop.databinding.ActivityChannelDetailsBinding;
 import com.example.hiringworkshop.model.VideoDetails;
-import com.example.hiringworkshop.model.VideoViewData;
+import com.example.hiringworkshop.model.response.VideoViewData;
+import com.example.hiringworkshop.viewmodel.VideoViewModel;
 
-import static com.example.hiringworkshop.model.Constants.BundleKKey.IS_CHANNEL_SUBSCRIBE;
 import static com.example.hiringworkshop.model.Constants.BundleKKey.VIDEO_DATA;
 
-public class ChannelDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class ChannelDetailsActivity extends BaseActivity<ActivityChannelDetailsBinding, VideoViewModel> implements View.OnClickListener {
 
     Bundle bundle;
     VideoViewData data;
@@ -27,7 +29,6 @@ public class ChannelDetailsActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_channel_details);
 
         mChannelDesc = findViewById(R.id.tv_desc);
         mTvOwner = findViewById(R.id.tv_channel_owner);
@@ -51,6 +52,22 @@ public class ChannelDetailsActivity extends AppCompatActivity implements View.On
 
         // Updated the state
         isClicked = VideoDetails.getInstance().isSubscribed;
+    }
+
+    @Override
+    int getLayoutId() {
+        return R.layout.activity_channel_details;
+    }
+
+    @Override
+    VideoViewModel getViewModel() {
+        mViewModel = ViewModelProviders.of(this).get(VideoViewModel.class);
+        return mViewModel;
+    }
+
+    @Override
+    int getBindingVariable() {
+        return BR.channel;
     }
 
 

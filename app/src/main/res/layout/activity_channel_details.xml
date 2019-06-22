@@ -1,38 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:padding="@dimen/dimen_24dp"
-    tools:context=".view.ChannelDetailsActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_34dp"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/dimen_14sp" />
+    <data>
+        <variable
+            name="channel"
+            type="com.example.hiringworkshop.viewmodel.VideoViewModel" />
+    </data>
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_channel_owner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_desc"
-        android:layout_marginTop="@dimen/dimen_34dp"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/dimen_14sp" />
+    <RelativeLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        android:padding="@dimen/dimen_24dp"
+        tools:context=".view.ChannelDetailsActivity">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/bt_subscribe"
-        android:layout_width="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:text="@string/subscribe_me"
-        android:textAllCaps="false"
-        android:layout_centerInParent="true"
-        android:paddingStart="@dimen/dimen_16sp"
-        android:paddingEnd="@dimen/dimen_16sp"
-        android:layout_height="wrap_content" />
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dimen_34dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/dimen_14sp" />
 
-</RelativeLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_channel_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_desc"
+            android:layout_marginTop="@dimen/dimen_34dp"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/dimen_14sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bt_subscribe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/colorPrimaryDark"
+            android:paddingStart="@dimen/dimen_16sp"
+            android:paddingEnd="@dimen/dimen_16sp"
+            android:text="@string/subscribe_me"
+            android:textAllCaps="false" />
+
+    </RelativeLayout>
+</layout>

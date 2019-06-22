@@ -1,8 +1,11 @@
 package com.example.hiringworkshop.model;
 
-public interface IWebserviceListener {
+import java.util.List;
 
-    void onSuccessfulApi(String response);
+public interface IWebserviceListener<T> {
+
+    void onSuccessfulApi(T response);
+    void onSuccessfulListApi(List<T> response);
     void onFailureApi(String error);
 
 }

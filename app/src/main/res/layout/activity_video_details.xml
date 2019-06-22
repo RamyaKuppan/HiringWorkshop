@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="videoData"
+            type="com.example.hiringworkshop.model.response.VideoViewData" />
+
+        <variable
+            name="video"
+            type="com.example.hiringworkshop.viewmodel.VideoViewModel" />
+
+        <variable
+            name="updateLike"
+            type="String" />
+
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_14dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/bt_subscription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:alpha="0.7"
+                android:background="@color/colorPrimaryDark"
+                android:text="@string/not_subscribe"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/dimen_16sp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_video"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_120dp"
+                android:layout_below="@+id/bt_subscription"
+                app:imageUrl="@{videoData.image}"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:scaleType="fitCenter" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_video"
+                android:layout_marginTop="@dimen/dimen_34dp"
+                android:textAlignment="center"
+                android:text="@{videoData.description}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/dimen_16sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_channel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_desc"
+                android:layout_marginTop="@dimen/dimen_34dp"
+                android:textAlignment="center"
+                android:text="@{videoData.channel}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/dimen_16sp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_views"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_channel"
+                android:layout_marginTop="@dimen/dimen_34dp"
+                android:textAlignment="center"
+                android:text="@{`Views :  `+videoData.views}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/dimen_16sp" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_like_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_views"
+                android:layout_marginTop="@dimen/dimen_34dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/bt_like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="@{updateLike.equals(`Like`) ? @string/like : @string/liked}"
+                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/dimen_16sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_click_here"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                    android:background="@color/colorMaroon"
+                    android:gravity="center_vertical"
+                    android:onClick="@{() -> video.onClickHere(videoData)}"
+                    android:text="@string/click_here"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/colorAccent" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_comments_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:nestedScrollingEnabled="true"
+                android:layout_below="@+id/ll_like_container"
+                android:layout_marginTop="@dimen/dimen_14dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_comments_header"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_below="@id/rv_comments_list"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:text="@string/add_comments"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorAccent" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_comments_header"
+                android:layout_marginTop="@dimen/dimen_24dp"
+                android:textColor="@color/colorAccent"
+                android:backgroundTint="@android:color/white"
+                android:hint="@string/add_comments_hint"
+                android:textColorHint="@color/colorAccent" />
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>

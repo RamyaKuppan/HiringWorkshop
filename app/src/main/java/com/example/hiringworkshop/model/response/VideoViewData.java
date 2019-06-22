@@ -1,8 +1,12 @@
-package com.example.hiringworkshop.model;
+package com.example.hiringworkshop.model.response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.databinding.BindingAdapter;
+
+import com.bumptech.glide.Glide;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -142,4 +146,11 @@ public class VideoViewData implements Parcelable {
             return new VideoViewData[size];
         }
     };
+
+
+    @BindingAdapter({"imageUrl"})
+    public static void setImageUrl(AppCompatImageView view, String url) {
+        Glide.with(view).load(url).into(view);
+    }
+
 }

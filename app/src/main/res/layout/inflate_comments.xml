@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="commentsData"
+            type="com.example.hiringworkshop.model.response.CommentsData" />
+
+        <variable
+            name="holder"
+            type="com.example.hiringworkshop.adapter.viewholder.CommentsViewHolder" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorGrey">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dimen_16dp"
+            android:layout_marginBottom="0.5dp"
+            android:background="@color/colorPrimary">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{commentsData.comment}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/colorAccent" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

@@ -3,7 +3,8 @@ package com.example.hiringworkshop.model;
 public interface Constants {
 
     interface HttpUrls{
-        String URL = "https://hiringworkshop.herokuapp.com/api/workshop/video";
+        String VIDEO_URL = "https://hiringworkshop.herokuapp.com/api/workshop/video";
+        String COMMENTS = "https://hiringworkshop.herokuapp.com/api/workshop/comments";
     }
 
     interface BundleKKey{

@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">HiringWorkshop</string>
     <string name="like">Like</string>
+    <string name="liked">Liked</string>
     <string name="subscribe">Subscribe</string>
     <string name="not_subscribe">Not Subscribed</string>
     <string name="subscribed">Subscribed</string>
     <string name="subscribe_me">Subscribe Me</string>
+    <string name="add_comments">Add Comments</string>
+    <string name="add_comments_hint">Comment here..</string>
+    <string name="click_here">Click Here</string>
 </resources>
